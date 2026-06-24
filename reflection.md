@@ -4,8 +4,12 @@
 
 **a. Initial design**
 
-- Briefly describe your initial UML design.
+- Briefly describe your initial UML design. My initial UML design consists of four classes: Owner, Pet, Task, and Plan.
 - What classes did you include, and what responsibilities did you assign to each?
+Owner is responsible for representing the pet owner. It holds the owner's name, available time for the day, and a list of their pets. It can add or update pets and update available time.
+Pet holds basic information about the pet: name, breed, and species, it and can return a readable summary of itself.
+Task represents a single care activity such as a walk, feeding, or grooming session. It stores the task type, priority, duration and whether it recurs daily. It can update its own priority and duration.
+Plan is the core of the system. It belongs to an Owner and a Pet, holds the full task list, and is responsible for scheduling, sorting tasks by priority, filtering out tasks that exceed available time, generating the final schedule, and displaying it.
 
 **b. Design changes**
 
