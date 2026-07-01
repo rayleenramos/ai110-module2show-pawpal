@@ -13,8 +13,9 @@ Plan is the core of the system. It belongs to an Owner and a Pet, holds the full
 
 **b. Design changes**
 
-- Did your design change during implementation?
-- If yes, describe at least one change and why you made it.
+- Did your design change during implementation? Yes, the design changed during implementation.
+- If yes, describe at least one change and why you made it. Originally, Plan stored a copy of the owner's available time when it was created, but that copy would go stale if the owner updated it later. The fix was to read self.owner.available_time directly so it always stays current.
+Also, Task priority started as a plain string with no rules, which meant typos could break sorting silently. Switching to an Enum made the allowed values explicit and sorting reliable.
 
 ---
 
