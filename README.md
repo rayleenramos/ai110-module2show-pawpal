@@ -43,10 +43,8 @@ pip install -r requirements.txt
 7. Refine UML so it matches what you actually built.
 
 ## 🖥️ Sample Output
-╔════════════════════════════════════════════════╗
-║  🐾 PawPal+ Daily Schedule                     ║
-║  Owner: Adam  |  Budget: 45 min                ║
-╚════════════════════════════════════════════════╝
+🐾 PawPal+ Daily Schedule                   
+Owner: Adam  |  Budget: 45 min               
 
   🐾 Huey (Dachshund)
   ──────────────────────────────────────────────
@@ -58,10 +56,8 @@ pip install -r requirements.txt
    1. Cut Nails               15 min  ● HIGH  ↺ recurring
    2. Brush Teeth             10 min  ● MEDIUM
 
-══════════════════════════════════════════════════
   Scheduled: 40 min  |  Skipped: 1 task(s)
   ⚠  Bath time skipped — needs 45 min
-══════════════════════════════════════════════════
 
 ## 🧪 Testing PawPal+
 
@@ -83,12 +79,14 @@ Sample test output:
 
 > Fill in once you've implemented scheduling logic.
 
+
+
 | Feature | Method(s) | Notes |
 |---------|-----------|-------|
-| Task sorting | | e.g., by priority, duration |
-| Filtering | | e.g., skip tasks if time runs out |
-| Conflict handling | | e.g., overlapping time slots |
-| Recurring tasks | | e.g., daily vs. weekly |
+| Task sorting |sort_by_priority(), sort_by_time_slot()|Sort by priority and duration, or by time of day|
+| Filtering |filter_by_pet(), get_pending_tasks(), get_completed_tasks()|Filter by pet name or completion status|
+| Conflict handling |detect_conflicts()| Warns if two tasks overlap in time, no crash|
+| Recurring tasks |complete_task(), Task.next_occurrence()|Completing a daily/weekly task auto-queues the next one |
 
 ## 📸 Demo Walkthrough
 
