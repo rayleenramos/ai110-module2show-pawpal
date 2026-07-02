@@ -43,16 +43,25 @@ pip install -r requirements.txt
 7. Refine UML so it matches what you actually built.
 
 ## 🖥️ Sample Output
+╔════════════════════════════════════════════════╗
+║  🐾 PawPal+ Daily Schedule                     ║
+║  Owner: Adam  |  Budget: 45 min                ║
+╚════════════════════════════════════════════════╝
 
-Paste a sample of your app's CLI or Streamlit output here so a reader can see what a generated plan looks like:
+  🐾 Huey (Dachshund)
+  ──────────────────────────────────────────────
+   1. Feed breakfast          10 min  ● HIGH
+   2. Morning walk            20 min  ● HIGH
 
-```
-# e.g.:
-# Daily plan for Biscuit (Golden Retriever):
-#   08:00 — Morning walk (30 min) [priority: high]
-#   09:00 — Feeding (10 min) [priority: high]
-#   ...
-```
+  🐾 Luna (Doberman)
+  ──────────────────────────────────────────────
+   1. Cut Nails               15 min  ● HIGH  ↺ recurring
+   2. Brush Teeth             10 min  ● MEDIUM
+
+══════════════════════════════════════════════════
+  Scheduled: 40 min  |  Skipped: 1 task(s)
+  ⚠  Bath time skipped — needs 45 min
+══════════════════════════════════════════════════
 
 ## 🧪 Testing PawPal+
 
