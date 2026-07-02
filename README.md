@@ -67,13 +67,13 @@ python -m pytest
 
 ```
 Sample test output:
-====================================================================================== test session starts =======================================================================================
+================================= test session starts ===========================================
 platform darwin -- Python 3.13.13, pytest-9.1.1, pluggy-1.6.0
-rootdir: /Users/rayleenramos/Desktop/AI_110/ai110-module2show-pawpal
+rootdir: /Users/rayleen/Desktop/AI_110/ai110-module2show-pawpal
 plugins: anyio-4.14.0
 collected 5 items                                                                                                                                                                                
 tests/test_pawpal.py .....                                                                                                                                                                 [100%]
-======================================================================================= 5 passed in 0.04s ========================================================================================
+================= 5 passed in 0.04s =====================
 ```
 
 ## 📐 Smarter Scheduling
