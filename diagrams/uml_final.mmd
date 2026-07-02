@@ -1,0 +1,85 @@
+classDiagram
+    class Priority {
+        <<enumeration>>
+        LOW
+        MEDIUM
+        HIGH
+    }
+
+    class TimeSlot {
+        <<enumeration>>
+        MORNING
+        AFTERNOON
+        EVENING
+        ANYTIME
+    }
+
+    class Task {
+        +str description
+        +int duration
+        +Priority priority
+        +bool is_recurring
+        +bool completed
+        +TimeSlot time_slot
+        +str recurrence_interval
+        +int start_time
+        +update_priority(priority) None
+        +update_duration(minutes) None
+        +mark_complete() None
+        +next_occurrence() Task
+        +end_time() int
+        +fmt_time(minutes) str
+        +get_summary() str
+    }
+
+    class Pet {
+        +str name
+        +str breed
+        +str species
+        +list~Task~ tasks
+        +add_task(task) None
+        +remove_task(task) None
+        +get_summary() str
+    }
+
+    class Owner {
+        +str name
+        +int available_time
+        +list~Pet~ pets
+        +add_pet(pet) None
+        +update_available_time(minutes) None
+        +update_pets(pet) None
+        +get_pets() list
+        +get_all_tasks() list
+    }
+
+    class Scheduler {
+        +Owner owner
+        +list~tuple~ scheduled_tasks
+        +available_time int
+        +get_all_tasks() list
+        +sort_by_priority(tasks) list
+        +sort_by_time_slot(tasks) list
+        +filter_by_pet(pet_name) list
+        +get_pending_tasks() list
+        +get_completed_tasks() list
+        +generate_schedule() list
+        +detect_conflicts() list
+        +complete_task(pet, task) Task
+        +add_task(pet, task) None
+        +remove_task(pet, task) None
+        +edit_task(task, ...) None
+        +display_schedule() str
+    }
+
+    Task --> Priority : uses
+    Task --> TimeSlot : uses
+    Task --> Task : next_occurrence()
+
+    Pet "1" *-- "0..*" Task : owns
+
+    Owner "1" *-- "1..*" Pet : owns
+
+    Scheduler "1" --> "1" Owner : manages
+    Scheduler ..> Pet : references
+    Scheduler ..> Task : schedules
