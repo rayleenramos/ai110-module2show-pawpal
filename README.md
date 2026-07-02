@@ -94,6 +94,7 @@ tests/test_pawpal.py .....                                                      
 5. Complete a recurring task and it automatically queues the next occurrence.
 6. Detect any tasks with overlapping start and end times and get a warning.
 
-![Screenshot](https://github.com/user-attachments/assets/466bbbf5-d7cd-46e5-96b9-b6cc7ff8d8ce)
+<img width="408" height="295" alt="Screenshot 2026-07-02 at 12 25 27 AM" src="https://github.com/user-attachments/assets/126e234b-0ad7-46b2-8754-a8a0cf8f352b" />
 
-<img width="696" height="289" alt="Screenshot 2026-07-02 at 12 20 17 AM" src="https://github.com/user-attachments/assets/c9e3b2d9-d96e-4de8-b624-09cb9fbe9ddc" />
+<img width="700" height="290" alt="Screenshot 2026-07-02 at 12 25 57 AM" src="https://github.com/user-attachments/assets/269c4ebe-3fa5-48e3-8ffa-c93150d53b08" />
+
