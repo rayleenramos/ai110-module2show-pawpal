@@ -87,12 +87,13 @@ tests/test_pawpal.py .....                                                      
 
 ## 📸 Demo Walkthrough
 
-Describe your app in numbered steps so a reader can follow along without watching a video:
+1. Create an owner with a time budget and add two pets with tasks of different priorities and time slots.
+2. Generate a daily schedule sorted by priority, tasks that don't fit the budget are listed as skipped.
+3. View the same tasks in chronological order from morning to evening.
+4. Filter tasks by pet name or completion status to get a focused view.
+5. Complete a recurring task and it automatically queues the next occurrence.
+6. Detect any tasks with overlapping start and end times and get a warning.
 
-1. <!-- Describe this step -->
-2. <!-- Describe this step -->
-3. <!-- Describe this step -->
-4. <!-- Describe this step -->
-5. <!-- Add more steps as needed -->
+<img width="405" height="304" alt="Screenshot 2026-07-02 at 12 19 54 AM" src="https://github.com/user-attachments/assets/466bbbf5-d7cd-46e5-96b9-b6cc7ff8d8ce" />
 
-**Screenshot or video** *(optional)*: <!-- Insert a screenshot or link to a demo video here -->
+<img width="696" height="289" alt="Screenshot 2026-07-02 at 12 20 17 AM" src="https://github.com/user-attachments/assets/c9e3b2d9-d96e-4de8-b624-09cb9fbe9ddc" />
