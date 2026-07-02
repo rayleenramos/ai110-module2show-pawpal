@@ -5,6 +5,7 @@
 **a. Initial design**
 
 - Briefly describe your initial UML design. My initial UML design consists of four classes: Owner, Pet, Task, and Plan.
+  
 - What classes did you include, and what responsibilities did you assign to each?
 Owner is responsible for representing the pet owner. It holds the owner's name, available time for the day, and a list of their pets. It can add or update pets and update available time.
 Pet holds basic information about the pet: name, breed, and species, it and can return a readable summary of itself.
@@ -14,6 +15,7 @@ Plan is the core of the system. It belongs to an Owner and a Pet, holds the full
 **b. Design changes**
 
 - Did your design change during implementation? Yes, the design changed during implementation.
+  
 - If yes, describe at least one change and why you made it. Originally, Plan stored a copy of the owner's available time when it was created, but that copy would go stale if the owner updated it later. The fix was to read self.owner.available_time directly so it always stays current.
 Also, Task priority started as a plain string with no rules, which meant typos could break sorting silently. Switching to an Enum made the allowed values explicit and sorting reliable.
 
