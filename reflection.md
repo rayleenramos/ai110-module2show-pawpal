@@ -41,13 +41,13 @@ Also, Task priority started as a plain string with no rules, which meant typos c
 
 **a. How you used AI**
 
-- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)?
-- What kinds of prompts or questions were most helpful?
+- How did you use AI tools during this project (for example: design brainstorming, debugging, refactoring)? I used AI for design brainstorming (identifying missing relationships and bottlenecks in my UML), implementing new features like conflict detection and recurring task logic, and refactoring display_schedule to produce cleaner terminal output.
+- What kinds of prompts or questions were most helpful? The most helpful prompts were specific ones that included the actual code and asked for a concrete improvement, like "suggest logic improvements for sorting and filtering" followed by "now implement the sorting and filtering features."
 
 **b. Judgment and verification**
 
-- Describe one moment where you did not accept an AI suggestion as-is.
-- How did you evaluate or verify what the AI suggested?
+- Describe one moment where you did not accept an AI suggestion as-is. When AI suggested storing available_time as a copy in Plan, I didn't accept it because I realized it would go stale if the owner updated their time later.
+- How did you evaluate or verify what the AI suggested?I verified the suggestion by tracing through what would happen if update_available_time() was called after the plan was created, and confirmed the copy would be out of sync.
 
 ---
 
@@ -55,13 +55,13 @@ Also, Task priority started as a plain string with no rules, which meant typos c
 
 **a. What you tested**
 
-- What behaviors did you test?
-- Why were these tests important?
+- What behaviors did you test? I tested task completion status changes, pet task count after adding tasks, chronological time slot sorting, recurring task cloning after completion, and conflict detection for overlapping tasks.
+- Why were these tests important? These tests were important because they cover the core behaviors the scheduler depends on, if any of these break, the whole schedule output would be wrong.
 
 **b. Confidence**
 
-- How confident are you that your scheduler works correctly?
-- What edge cases would you test next if you had more time?
+- How confident are you that your scheduler works correctly? I'm confident the scheduler handles the scenarios I built and tested, since all 5 tests pass and the terminal output matches expected behavior.
+- What edge cases would you test next if you had more time? Next I would test what happens when available time is 0, when two pets have tasks at the exact same start time, and when a recurring task has no recurrence interval set.
 
 ---
 
@@ -69,12 +69,13 @@ Also, Task priority started as a plain string with no rules, which meant typos c
 
 **a. What went well**
 
-- What part of this project are you most satisfied with?
+- What part of this project are you most satisfied with? I'm most satisfied with the conflict detection and recurring task logic because they added real functionality beyond basic scheduling and required me to think carefully about how the classes interact.
 
 **b. What you would improve**
 
-- If you had another iteration, what would you improve or redesign?
+- If you had another iteration, what would you improve or redesign? I would redesign display_schedule to be separate from the scheduler logic so formatting and scheduling aren't mixed in the same class, making it easier to swap out the display without touching the core logic.
 
 **c. Key takeaway**
 
-- What is one important thing you learned about designing systems or working with AI on this project?
+- What is one important thing you learned about designing systems or working with AI on this project? Working with AI taught me that generated code needs to be traced through manually, it can look correct but break under real usage, so treating it like any other code that needs testing is the right approach.
+
