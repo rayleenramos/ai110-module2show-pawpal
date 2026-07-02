@@ -64,7 +64,6 @@ Owner: Adam  |  Budget: 45 min
 ```bash
 # Run the full test suite:
 python -m pytest
-
 ```
 Sample test output:
 ================================= test session starts ===========================================
@@ -74,7 +73,7 @@ plugins: anyio-4.14.0
 collected 5 items                                                                                                                                                                                
 tests/test_pawpal.py .....                                                                                                                                                                 [100%]
 ================= 5 passed in 0.04s =====================
-```
+
 
 ## 📐 Smarter Scheduling
 
