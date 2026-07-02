@@ -23,13 +23,15 @@ Also, Task priority started as a plain string with no rules, which meant typos c
 
 **a. Constraints and priorities**
 
-- What constraints does your scheduler consider (for example: time, priority, preferences)?
-- How did you decide which constraints mattered most?
+- What constraints does your scheduler consider (for example: time, priority, preferences)? The scheduler considers three constraints: the owner's total available time, task priority (HIGH, MEDIUM, LOW), and whether a task is recurring.
+
+- How did you decide which constraints mattered most? Priority mattered most because a pet owner should always handle urgent tasks like medication before optional ones like grooming, regardless of how much time is left.
 
 **b. Tradeoffs**
 
-- Describe one tradeoff your scheduler makes.
-- Why is that tradeoff reasonable for this scenario?
+- Describe one tradeoff your scheduler makes. The scheduler uses a greedy approach, it picks tasks in priority order and stops when time runs out, which means a long HIGH priority task could use all the available time and knock out several shorter MEDIUM tasks.
+
+- Why is that tradeoff reasonable for this scenario? This is reasonable because for pet care, doing the most important things completely is better than partially fitting in everything.
 
 ---
 
