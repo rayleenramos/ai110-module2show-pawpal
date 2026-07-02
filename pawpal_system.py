@@ -1,3 +1,4 @@
+from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -8,6 +9,13 @@ class Priority(Enum):
     HIGH = 3
 
 
+class TimeSlot(Enum):
+    MORNING   = 1
+    AFTERNOON = 2
+    EVENING   = 3
+    ANYTIME   = 4  # no preference — sorted last within a priority group
+
+
 @dataclass
 class Task:
     description: str
@@ -15,6 +23,9 @@ class Task:
     priority: Priority
     is_recurring: bool = False
     completed: bool = False
+    time_slot: TimeSlot = TimeSlot.ANYTIME
+    recurrence_interval: str | None = None  # "daily" or "weekly"; None means no auto-recurrence
+    start_time: int | None = None           # minutes from midnight (e.g. 480 = 8:00 AM); None = unscheduled
 
     def update_priority(self, priority: Priority) -> None:
         """Set a new priority level for this task."""
@@ -27,6 +38,30 @@ class Task:
     def mark_complete(self) -> None:
         """Mark this task as completed."""
         self.completed = True
+
+    def next_occurrence(self) -> Task:
+        """Return a fresh, uncompleted copy of this task for its next occurrence.
+        Raises ValueError if recurrence_interval is not set."""
+        if not self.recurrence_interval:
+            raise ValueError(f"Task '{self.description}' has no recurrence_interval set.")
+        return Task(
+            description=self.description,
+            duration=self.duration,
+            priority=self.priority,
+            is_recurring=self.is_recurring,
+            completed=False,
+            time_slot=self.time_slot,
+            recurrence_interval=self.recurrence_interval,
+            start_time=self.start_time,
+        )
+
+    def end_time(self) -> int | None:
+        """Return the minute-from-midnight when this task ends, or None if unscheduled."""
+        return self.start_time + self.duration if self.start_time is not None else None
+
+    def fmt_time(self, minutes: int) -> str:
+        """Format minutes-from-midnight as HH:MM."""
+        return f"{minutes // 60:02d}:{minutes % 60:02d}"
 
     def get_summary(self) -> str:
         """Return a single-line string describing the task's key details."""
@@ -106,8 +141,24 @@ class Scheduler:
         ]
 
     def sort_by_priority(self, tasks: list[tuple[Pet, Task]]) -> list[tuple[Pet, Task]]:
-        """Sort (pet, task) pairs highest priority first, then by shortest duration."""
-        return sorted(tasks, key=lambda pt: (-pt[1].priority.value, pt[1].duration))
+        """Sort highest priority first, then by time slot (morning → evening → anytime), then shortest duration."""
+        return sorted(tasks, key=lambda pt: (-pt[1].priority.value, pt[1].time_slot.value, pt[1].duration))
+
+    def sort_by_time_slot(self, tasks: list[tuple[Pet, Task]]) -> list[tuple[Pet, Task]]:
+        """Sort strictly by time slot order, then by priority within each slot."""
+        return sorted(tasks, key=lambda pt: (pt[1].time_slot.value, -pt[1].priority.value, pt[1].duration))
+
+    def filter_by_pet(self, pet_name: str) -> list[tuple[Pet, Task]]:
+        """Return only scheduled tasks belonging to the named pet."""
+        return [(pet, task) for pet, task in self.scheduled_tasks if pet.name == pet_name]
+
+    def get_pending_tasks(self) -> list[tuple[Pet, Task]]:
+        """Return all tasks (across all pets) that are not yet completed."""
+        return [(pet, task) for pet, task in self.owner.get_all_tasks() if not task.completed]
+
+    def get_completed_tasks(self) -> list[tuple[Pet, Task]]:
+        """Return all tasks (across all pets) that are marked completed."""
+        return [(pet, task) for pet, task in self.owner.get_all_tasks() if task.completed]
 
     def generate_schedule(self) -> list[tuple[Pet, Task]]:
         """
@@ -126,6 +177,41 @@ class Scheduler:
                 time_left -= task.duration
 
         return self.scheduled_tasks
+
+    def detect_conflicts(self) -> list[str]:
+        """Check scheduled tasks with a start_time for overlapping intervals.
+        Returns a list of human-readable warning strings (empty if no conflicts)."""
+        timed = [
+            (pet, task)
+            for pet, task in self.scheduled_tasks
+            if task.start_time is not None
+        ]
+
+        warnings: list[str] = []
+        for i in range(len(timed)):
+            for j in range(i + 1, len(timed)):
+                pet_a, task_a = timed[i]
+                pet_b, task_b = timed[j]
+                # Overlap when one task starts before the other ends
+                if task_a.start_time < task_b.start_time + task_b.duration and \
+                   task_b.start_time < task_a.start_time + task_a.duration:
+                    a_range = f"{task_a.fmt_time(task_a.start_time)}–{task_a.fmt_time(task_a.end_time())}"
+                    b_range = f"{task_b.fmt_time(task_b.start_time)}–{task_b.fmt_time(task_b.end_time())}"
+                    warnings.append(
+                        f"CONFLICT: [{pet_a.name}] '{task_a.description}' ({a_range}) "
+                        f"overlaps [{pet_b.name}] '{task_b.description}' ({b_range})"
+                    )
+        return warnings
+
+    def complete_task(self, pet: Pet, task: Task) -> Task | None:
+        """Mark task complete. If it has a recurrence_interval, add the next
+        occurrence to the pet and return it; otherwise return None."""
+        task.mark_complete()
+        if task.recurrence_interval in ("daily", "weekly"):
+            next_task = task.next_occurrence()
+            pet.add_task(next_task)
+            return next_task
+        return None
 
     def add_task(self, pet: Pet, task: Task) -> None:
         """Add a task directly to the given pet."""
@@ -199,8 +285,9 @@ class Scheduler:
                 color = PRIORITY_COLOR[task.priority]
                 dot = f"{color}●{task.priority.name}{RESET}"
                 recur = f"  {DIM}↺ recurring{RESET}" if task.is_recurring else ""
+                slot = f"  {DIM}[{task.time_slot.name.lower()}]{RESET}" if task.time_slot != TimeSlot.ANYTIME else ""
                 desc = f"{task.description:<22}"
-                lines.append(f"   {i}. {desc} {task.duration:>3} min  {dot}{recur}")
+                lines.append(f"   {i}. {desc} {task.duration:>3} min  {dot}{recur}{slot}")
 
         # footer
         scheduled_time = sum(t.duration for _, t in self.scheduled_tasks if not t.is_recurring)
